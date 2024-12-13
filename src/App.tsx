@@ -3,6 +3,9 @@ import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
 const client = generateClient<Schema>();
+const { data } = await client.queries.getPost({
+    id: "<post-id>"
+});
 
 function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
@@ -19,7 +22,7 @@ function App() {
 
   return (
     <main>
-      <h1>Your todos</h1>
+      <h1>Your todos+{data}</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (

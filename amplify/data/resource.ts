@@ -10,8 +10,22 @@ const schema = a.schema({
   Todo: a
     .model({
       content: a.string(),
+      isDone: a.boolean(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+
+  getPost: a
+      .query()
+      .arguments({ id: a.id().required() })
+      .returns(a.ref("Post"))
+      .authorization(allow => [allow.publicApiKey()])
+      .handler(
+          a.handler.custom({
+            dataSource: "OrderTable",
+            entry: "./getPost.js",
+          })
+      ),
 });
 
 export type Schema = ClientSchema<typeof schema>;
